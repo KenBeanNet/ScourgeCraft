@@ -69,12 +69,14 @@ public class ScourgeCraftCore
     	
     	for (int var3 = 0; var3 < OresEnum.names.length; var3++)
     	{
-    		oresBlocksIDs[(var3 * oreBlocksPerType) + 0] = config.get(OresEnum.names[var3] + " IDs", OresEnum.names[var3] + " Ore", StartId + (var3 * oreTotalsPerType) + 0).getInt();
+    		if (OresEnum.defaultIsMetal[var3])
+    			oresBlocksIDs[(var3 * oreBlocksPerType) + 0] = config.get(OresEnum.names[var3] + " IDs", OresEnum.names[var3] + " Ore", StartId + (var3 * oreTotalsPerType) + 0).getInt();
     		oresBlocksIDs[(var3 * oreBlocksPerType) + 1] = config.get(OresEnum.names[var3] + " IDs", OresEnum.names[var3] + " Block", StartId + (var3 * oreTotalsPerType) + 1).getInt();
     		oresBlocksIDs[(var3 * oreBlocksPerType) + 2] = config.get(OresEnum.names[var3] + " IDs", OresEnum.names[var3] + " Brick", StartId + (var3 * oreTotalsPerType) + 2).getInt();
     		oresItemsIDs[(var3 * oreItemsPerType) + 0] = config.get(OresEnum.names[var3] + " IDs", OresEnum.names[var3] + " Dust", StartId + (var3 * oreTotalsPerType) + 3).getInt();
     		oresItemsIDs[(var3 * oreItemsPerType) + 1] = config.get(OresEnum.names[var3] + " IDs", OresEnum.names[var3] + " Ingot", StartId + (var3 * oreTotalsPerType) + 4).getInt();
-    		oresItemsIDs[(var3 * oreItemsPerType) + 2] = config.get(OresEnum.names[var3] + " IDs", OresEnum.names[var3] + " Nugget", StartId + (var3 * oreTotalsPerType) + 5).getInt();
+    		if (OresEnum.defaultIsMetal[var3])	
+    			oresItemsIDs[(var3 * oreItemsPerType) + 2] = config.get(OresEnum.names[var3] + " IDs", OresEnum.names[var3] + " Nugget", StartId + (var3 * oreTotalsPerType) + 5).getInt();
     		
 
         	if (OresEnum.defaultHasTools[var3]) {
@@ -103,14 +105,17 @@ public class ScourgeCraftCore
     	//Ores
     	for (int var3 = 0; var3 < OresEnum.names.length; var3++)
     	{
-    		oresBlocks[(var3 * oreBlocksPerType) + 0] = new ScourgeBlock(oresBlocksIDs[(var3 * oreBlocksPerType) + 0]).setUnlocalizedName(OresEnum.names[var3].toLowerCase() + "Ore");
+    		if (OresEnum.defaultIsMetal[var3])
+    			oresBlocks[(var3 * oreBlocksPerType) + 0] = new ScourgeBlock(oresBlocksIDs[(var3 * oreBlocksPerType) + 0]).setUnlocalizedName(OresEnum.names[var3].toLowerCase() + "Ore");
     		oresBlocks[(var3 * oreBlocksPerType) + 1] = new ScourgeBlock(oresBlocksIDs[(var3 * oreBlocksPerType) + 1]).setUnlocalizedName(OresEnum.names[var3].toLowerCase() + "Block");
     		oresBlocks[(var3 * oreBlocksPerType) + 2] = new ScourgeBlock(oresBlocksIDs[(var3 * oreBlocksPerType) + 2]).setUnlocalizedName(OresEnum.names[var3].toLowerCase() + "Brick");
     		oresItems[(var3 * oreItemsPerType) + 0] = new ScourgeItem(oresItemsIDs[(var3 * oreItemsPerType) + 0]).setUnlocalizedName(OresEnum.names[var3].toLowerCase() + "Dust");
     		oresItems[(var3 * oreItemsPerType) + 1] = new ScourgeItem(oresItemsIDs[(var3 * oreItemsPerType) + 1]).setUnlocalizedName(OresEnum.names[var3].toLowerCase() + "Ingot");
-    		oresItems[(var3 * oreItemsPerType) + 2] = new ScourgeItem(oresItemsIDs[(var3 * oreItemsPerType) + 2]).setUnlocalizedName(OresEnum.names[var3].toLowerCase() + "Nugget");
+    		if (OresEnum.defaultIsMetal[var3])
+    			oresItems[(var3 * oreItemsPerType) + 2] = new ScourgeItem(oresItemsIDs[(var3 * oreItemsPerType) + 2]).setUnlocalizedName(OresEnum.names[var3].toLowerCase() + "Nugget");
     		
     		if (OresEnum.defaultHasTools[var3]) {
+    			System.out.println(OresEnum.names[var3]);
     			oresTools[(var3 * oreToolsPerType) + 0] = new ScourgeItemAxe(oresToolsIDs[(var3 * oreToolsPerType) + 0], OresEnum.toolEnum[var3]).setUnlocalizedName(OresEnum.names[var3].toLowerCase() + "Axe");
     			oresTools[(var3 * oreToolsPerType) + 1] = new ScourgeItemHoe(oresToolsIDs[(var3 * oreToolsPerType) + 1], OresEnum.toolEnum[var3]).setUnlocalizedName(OresEnum.names[var3].toLowerCase() + "Hoe");
     			oresTools[(var3 * oreToolsPerType) + 2] = new ScourgeItemPickAxe(oresToolsIDs[(var3 * oreToolsPerType) + 2], OresEnum.toolEnum[var3]).setUnlocalizedName(OresEnum.names[var3].toLowerCase() + "PickAxe");
@@ -135,12 +140,14 @@ public class ScourgeCraftCore
     	//Ores
     	for (int var3 = 0; var3 < OresEnum.names.length; var3++)
     	{
-    		GameRegistry.registerBlock(oresBlocks[(var3 * oreBlocksPerType) + 0], "block" + oresBlocks[(var3 * oreBlocksPerType) + 0].getUnlocalizedName2());
+    		if (OresEnum.defaultIsMetal[var3])
+    			GameRegistry.registerBlock(oresBlocks[(var3 * oreBlocksPerType) + 0], "block" + oresBlocks[(var3 * oreBlocksPerType) + 0].getUnlocalizedName2());
     		GameRegistry.registerBlock(oresBlocks[(var3 * oreBlocksPerType) + 1], "block" + oresBlocks[(var3 * oreBlocksPerType) + 1].getUnlocalizedName2());
     		GameRegistry.registerBlock(oresBlocks[(var3 * oreBlocksPerType) + 2], "block" + oresBlocks[(var3 * oreBlocksPerType) + 2].getUnlocalizedName2());
     		GameRegistry.registerItem(oresItems[(var3 * oreItemsPerType) + 0], "item" + oresItems[(var3 * oreItemsPerType) + 0].getUnlocalizedName().replaceAll("item.", ""));
     		GameRegistry.registerItem(oresItems[(var3 * oreItemsPerType) + 1], "item" + oresItems[(var3 * oreItemsPerType) + 1].getUnlocalizedName().replaceAll("item.", ""));
-    		GameRegistry.registerItem(oresItems[(var3 * oreItemsPerType) + 2], "item" + oresItems[(var3 * oreItemsPerType) + 2].getUnlocalizedName().replaceAll("item.", ""));
+    		if (OresEnum.defaultIsMetal[var3])
+    			GameRegistry.registerItem(oresItems[(var3 * oreItemsPerType) + 2], "item" + oresItems[(var3 * oreItemsPerType) + 2].getUnlocalizedName().replaceAll("item.", ""));
     		
     		if (OresEnum.defaultHasTools[var3]) {
     			GameRegistry.registerItem(oresTools[(var3 * oreToolsPerType) + 0], "tool" + oresTools[(var3 * oreToolsPerType) + 0].getUnlocalizedName());
@@ -164,12 +171,14 @@ public class ScourgeCraftCore
     	//Ores
     	for (int var3 = 0; var3 < OresEnum.names.length; var3++)
     	{
-    		LanguageRegistry.addName(oresBlocks[(var3 * oreBlocksPerType) + 0], OresEnum.names[var3] + " Ore");
+    		if (OresEnum.defaultIsMetal[var3])
+    			LanguageRegistry.addName(oresBlocks[(var3 * oreBlocksPerType) + 0], OresEnum.names[var3] + " Ore");
     		LanguageRegistry.addName(oresBlocks[(var3 * oreBlocksPerType) + 1], OresEnum.names[var3] + " Block");
     		LanguageRegistry.addName(oresBlocks[(var3 * oreBlocksPerType) + 2], OresEnum.names[var3] + " Brick");
     		LanguageRegistry.addName(oresItems[(var3 * oreItemsPerType) + 0], OresEnum.names[var3] + " Dust");
     		LanguageRegistry.addName(oresItems[(var3 * oreItemsPerType) + 1], OresEnum.names[var3] + " Ingot");
-    		LanguageRegistry.addName(oresItems[(var3 * oreItemsPerType) + 2], OresEnum.names[var3] + " Nugget");
+    		if (OresEnum.defaultIsMetal[var3])
+    			LanguageRegistry.addName(oresItems[(var3 * oreItemsPerType) + 2], OresEnum.names[var3] + " Nugget");
     		
     		if (OresEnum.defaultHasTools[var3]) {
     			LanguageRegistry.addName(oresTools[(var3 * oreToolsPerType) + 0], OresEnum.names[var3] + " Axe");
