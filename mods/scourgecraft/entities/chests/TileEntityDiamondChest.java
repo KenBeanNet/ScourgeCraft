@@ -1,5 +1,10 @@
 package mods.scourgecraft.entities.chests;
 
-public class TileEntityDiamondChest {
+import mods.scourgecraft.ScourgeChestEnum;
 
+public class TileEntityDiamondChest extends TileEntityIronChest {
+	public TileEntityDiamondChest()
+    {
+        super(ScourgeChestEnum.DIAMOND);
+    }
 }
