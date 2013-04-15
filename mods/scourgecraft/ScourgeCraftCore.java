@@ -14,7 +14,11 @@ import mods.scourgecraft.items.ScourgeItemSword;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraftforge.common.Configuration;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
@@ -30,7 +34,7 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
         version = "0.0.1"
 )
 @NetworkMod(
-        channels = {"MetallurgyCore"},
+        channels = {"ScourgeCraftCore"},
         clientSideRequired = true,
         serverSideRequired = false,
         packetHandler = PacketHandler.class
@@ -43,6 +47,8 @@ public class ScourgeCraftCore
 	private static final int oreItemsPerType = 3;
 	private static final int oreToolsPerType = 5;
 	private static final int oreArmorsPerType = 4;
+
+	private static ItemIdHandler idGenerator = new ItemIdHandler();
 	
     @Mod.Instance("ScourgeCraftCore")
     public static ScourgeCraftCore instance;
@@ -67,16 +73,19 @@ public class ScourgeCraftCore
     	Configuration config = new Configuration(event.getSuggestedConfigurationFile());
     	config.load();
     	
+    	//Ores Load
     	for (int var3 = 0; var3 < OresEnum.names.length; var3++)
     	{
-    		if (OresEnum.defaultIsMetal[var3])
+    		if (OresEnum.defaultIsMetal[var3]) {
     			oresBlocksIDs[(var3 * oreBlocksPerType) + 0] = config.get(OresEnum.names[var3] + " IDs", OresEnum.names[var3] + " Ore", StartId + (var3 * oreTotalsPerType) + 0).getInt();
+    		}
     		oresBlocksIDs[(var3 * oreBlocksPerType) + 1] = config.get(OresEnum.names[var3] + " IDs", OresEnum.names[var3] + " Block", StartId + (var3 * oreTotalsPerType) + 1).getInt();
     		oresBlocksIDs[(var3 * oreBlocksPerType) + 2] = config.get(OresEnum.names[var3] + " IDs", OresEnum.names[var3] + " Brick", StartId + (var3 * oreTotalsPerType) + 2).getInt();
     		oresItemsIDs[(var3 * oreItemsPerType) + 0] = config.get(OresEnum.names[var3] + " IDs", OresEnum.names[var3] + " Dust", StartId + (var3 * oreTotalsPerType) + 3).getInt();
     		oresItemsIDs[(var3 * oreItemsPerType) + 1] = config.get(OresEnum.names[var3] + " IDs", OresEnum.names[var3] + " Ingot", StartId + (var3 * oreTotalsPerType) + 4).getInt();
-    		if (OresEnum.defaultIsMetal[var3])	
+    		if (OresEnum.defaultIsMetal[var3])	{
     			oresItemsIDs[(var3 * oreItemsPerType) + 2] = config.get(OresEnum.names[var3] + " IDs", OresEnum.names[var3] + " Nugget", StartId + (var3 * oreTotalsPerType) + 5).getInt();
+    		}
     		
 
         	if (OresEnum.defaultHasTools[var3]) {
@@ -106,16 +115,15 @@ public class ScourgeCraftCore
     	for (int var3 = 0; var3 < OresEnum.names.length; var3++)
     	{
     		if (OresEnum.defaultIsMetal[var3])
-    			oresBlocks[(var3 * oreBlocksPerType) + 0] = new ScourgeBlock(oresBlocksIDs[(var3 * oreBlocksPerType) + 0]).setUnlocalizedName(OresEnum.names[var3].toLowerCase() + "Ore");
-    		oresBlocks[(var3 * oreBlocksPerType) + 1] = new ScourgeBlock(oresBlocksIDs[(var3 * oreBlocksPerType) + 1]).setUnlocalizedName(OresEnum.names[var3].toLowerCase() + "Block");
-    		oresBlocks[(var3 * oreBlocksPerType) + 2] = new ScourgeBlock(oresBlocksIDs[(var3 * oreBlocksPerType) + 2]).setUnlocalizedName(OresEnum.names[var3].toLowerCase() + "Brick");
+    			oresBlocks[(var3 * oreBlocksPerType) + 0] = new ScourgeBlock(oresBlocksIDs[(var3 * oreBlocksPerType) + 0]).setHardness(2.0F).setResistance(0.1F).setUnlocalizedName(OresEnum.names[var3].toLowerCase() + "Ore");
+    		oresBlocks[(var3 * oreBlocksPerType) + 1] = new ScourgeBlock(oresBlocksIDs[(var3 * oreBlocksPerType) + 1]).setHardness(5.0F).setResistance(0.1F).setUnlocalizedName(OresEnum.names[var3].toLowerCase() + "Block");
+    		oresBlocks[(var3 * oreBlocksPerType) + 2] = new ScourgeBlock(oresBlocksIDs[(var3 * oreBlocksPerType) + 2]).setHardness(5.0F).setResistance(10.0F).setUnlocalizedName(OresEnum.names[var3].toLowerCase() + "Brick");
     		oresItems[(var3 * oreItemsPerType) + 0] = new ScourgeItem(oresItemsIDs[(var3 * oreItemsPerType) + 0]).setUnlocalizedName(OresEnum.names[var3].toLowerCase() + "Dust");
     		oresItems[(var3 * oreItemsPerType) + 1] = new ScourgeItem(oresItemsIDs[(var3 * oreItemsPerType) + 1]).setUnlocalizedName(OresEnum.names[var3].toLowerCase() + "Ingot");
     		if (OresEnum.defaultIsMetal[var3])
     			oresItems[(var3 * oreItemsPerType) + 2] = new ScourgeItem(oresItemsIDs[(var3 * oreItemsPerType) + 2]).setUnlocalizedName(OresEnum.names[var3].toLowerCase() + "Nugget");
     		
     		if (OresEnum.defaultHasTools[var3]) {
-    			System.out.println(OresEnum.names[var3]);
     			oresTools[(var3 * oreToolsPerType) + 0] = new ScourgeItemAxe(oresToolsIDs[(var3 * oreToolsPerType) + 0], OresEnum.toolEnum[var3]).setUnlocalizedName(OresEnum.names[var3].toLowerCase() + "Axe");
     			oresTools[(var3 * oreToolsPerType) + 1] = new ScourgeItemHoe(oresToolsIDs[(var3 * oreToolsPerType) + 1], OresEnum.toolEnum[var3]).setUnlocalizedName(OresEnum.names[var3].toLowerCase() + "Hoe");
     			oresTools[(var3 * oreToolsPerType) + 2] = new ScourgeItemPickAxe(oresToolsIDs[(var3 * oreToolsPerType) + 2], OresEnum.toolEnum[var3]).setUnlocalizedName(OresEnum.names[var3].toLowerCase() + "PickAxe");
@@ -141,28 +149,47 @@ public class ScourgeCraftCore
     	for (int var3 = 0; var3 < OresEnum.names.length; var3++)
     	{
     		if (OresEnum.defaultIsMetal[var3])
+    		{
     			GameRegistry.registerBlock(oresBlocks[(var3 * oreBlocksPerType) + 0], "block" + oresBlocks[(var3 * oreBlocksPerType) + 0].getUnlocalizedName2());
+    			MinecraftForge.setBlockHarvestLevel(oresBlocks[(var3 * oreBlocksPerType) + 0], var3, "pickaxe", OresEnum.harvestLevels[var3]);
+
+    			//Ore to Ingot
+        		GameRegistry.addSmelting(oresBlocksIDs[(var3 * oreBlocksPerType) + 0], new ItemStack(oresItems[(var3 * oreItemsPerType) + 1], 1), 0.4F);
+    		}
+    		
     		GameRegistry.registerBlock(oresBlocks[(var3 * oreBlocksPerType) + 1], "block" + oresBlocks[(var3 * oreBlocksPerType) + 1].getUnlocalizedName2());
+    		MinecraftForge.setBlockHarvestLevel(oresBlocks[(var3 * oreBlocksPerType) + 1], var3, "pickaxe", OresEnum.harvestLevels[var3]);
+            
     		GameRegistry.registerBlock(oresBlocks[(var3 * oreBlocksPerType) + 2], "block" + oresBlocks[(var3 * oreBlocksPerType) + 2].getUnlocalizedName2());
+    		MinecraftForge.setBlockHarvestLevel(oresBlocks[(var3 * oreBlocksPerType) + 2], var3, "pickaxe", OresEnum.harvestLevels[var3]);
+    		
     		GameRegistry.registerItem(oresItems[(var3 * oreItemsPerType) + 0], "item" + oresItems[(var3 * oreItemsPerType) + 0].getUnlocalizedName().replaceAll("item.", ""));
+    		
     		GameRegistry.registerItem(oresItems[(var3 * oreItemsPerType) + 1], "item" + oresItems[(var3 * oreItemsPerType) + 1].getUnlocalizedName().replaceAll("item.", ""));
+    		
     		if (OresEnum.defaultIsMetal[var3])
     			GameRegistry.registerItem(oresItems[(var3 * oreItemsPerType) + 2], "item" + oresItems[(var3 * oreItemsPerType) + 2].getUnlocalizedName().replaceAll("item.", ""));
     		
     		if (OresEnum.defaultHasTools[var3]) {
-    			GameRegistry.registerItem(oresTools[(var3 * oreToolsPerType) + 0], "tool" + oresTools[(var3 * oreToolsPerType) + 0].getUnlocalizedName());
-        		GameRegistry.registerItem(oresTools[(var3 * oreToolsPerType) + 1], "tool" + oresTools[(var3 * oreToolsPerType) + 1].getUnlocalizedName());
-        		GameRegistry.registerItem(oresTools[(var3 * oreToolsPerType) + 2], "tool" + oresTools[(var3 * oreToolsPerType) + 2].getUnlocalizedName());
-        		GameRegistry.registerItem(oresTools[(var3 * oreToolsPerType) + 3], "tool" + oresTools[(var3 * oreToolsPerType) + 3].getUnlocalizedName());
-        		GameRegistry.registerItem(oresTools[(var3 * oreToolsPerType) + 4], "tool" + oresTools[(var3 * oreToolsPerType) + 4].getUnlocalizedName());
+    			GameRegistry.registerItem(oresTools[(var3 * oreToolsPerType) + 0], "tool" + oresTools[(var3 * oreToolsPerType) + 0].getUnlocalizedName().replaceAll("item.", ""));
+        		GameRegistry.registerItem(oresTools[(var3 * oreToolsPerType) + 1], "tool" + oresTools[(var3 * oreToolsPerType) + 1].getUnlocalizedName().replaceAll("item.", ""));
+        		GameRegistry.registerItem(oresTools[(var3 * oreToolsPerType) + 2], "tool" + oresTools[(var3 * oreToolsPerType) + 2].getUnlocalizedName().replaceAll("item.", ""));
+        		GameRegistry.registerItem(oresTools[(var3 * oreToolsPerType) + 3], "tool" + oresTools[(var3 * oreToolsPerType) + 3].getUnlocalizedName().replaceAll("item.", ""));
+        		GameRegistry.registerItem(oresTools[(var3 * oreToolsPerType) + 4], "tool" + oresTools[(var3 * oreToolsPerType) + 4].getUnlocalizedName().replaceAll("item.", ""));
+        		MinecraftForge.setToolClass(oresTools[(var3 * oreToolsPerType) + 2], "pickaxe", OresEnum.pickLevels[var3]);
     		}
     		
     		if (OresEnum.defaultHasArmors[var3]) {
-    			GameRegistry.registerItem(oresArmors[(var3 * oreArmorsPerType) + 0], "armor" + oresArmors[(var3 * oreArmorsPerType) + 0].getUnlocalizedName());
-    			GameRegistry.registerItem(oresArmors[(var3 * oreArmorsPerType) + 1], "armor" + oresArmors[(var3 * oreArmorsPerType) + 1].getUnlocalizedName());
-    			GameRegistry.registerItem(oresArmors[(var3 * oreArmorsPerType) + 2], "armor" + oresArmors[(var3 * oreArmorsPerType) + 2].getUnlocalizedName());
-    			GameRegistry.registerItem(oresArmors[(var3 * oreArmorsPerType) + 3], "armor" + oresArmors[(var3 * oreArmorsPerType) + 3].getUnlocalizedName());
+    			GameRegistry.registerItem(oresArmors[(var3 * oreArmorsPerType) + 0], "armor" + oresArmors[(var3 * oreArmorsPerType) + 0].getUnlocalizedName().replaceAll("item.", ""));
+    			GameRegistry.registerItem(oresArmors[(var3 * oreArmorsPerType) + 1], "armor" + oresArmors[(var3 * oreArmorsPerType) + 1].getUnlocalizedName().replaceAll("item.", ""));
+    			GameRegistry.registerItem(oresArmors[(var3 * oreArmorsPerType) + 2], "armor" + oresArmors[(var3 * oreArmorsPerType) + 2].getUnlocalizedName().replaceAll("item.", ""));
+    			GameRegistry.registerItem(oresArmors[(var3 * oreArmorsPerType) + 3], "armor" + oresArmors[(var3 * oreArmorsPerType) + 3].getUnlocalizedName().replaceAll("item.", ""));
     		}
+    		
+            GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(oresBlocks[(var3 * oreBlocksPerType) + 1], 1, 0), new Object[] {"XXX", "XXX", "XXX", 'X', oresItems[(var3 * oreItemsPerType) + 1]}));
+            GameRegistry.addRecipe(new ItemStack(oresItems[(var3 * oreItemsPerType) + 1], 9), new Object[] {"X", 'X', new ItemStack(oresBlocks[(var3 * oreBlocksPerType) + 1], 1, 0)});	
+    		//Dust to Ingot
+    		GameRegistry.addSmelting(oresItemsIDs[(var3 * oreItemsPerType) + 0], new ItemStack(oresItems[(var3 * oreItemsPerType) + 1], 1), 1.0F);
     	}
     }
     

@@ -21,5 +21,4 @@ public class ScourgeItem extends Item {
     public void registerIcons(IconRegister par1IconRegister) {
 		this.itemIcon = par1IconRegister.registerIcon(ScourgeCraftCore.modid + ":" + this.getUnlocalizedName().replaceAll("item.", ""));
 	}
-	
 }

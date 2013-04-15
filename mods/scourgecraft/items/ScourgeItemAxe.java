@@ -14,15 +14,15 @@ import net.minecraft.item.ItemStack;
 public class ScourgeItemAxe extends ItemAxe {
 
 	/** The material this tool is made from. */
-    protected ScourgeCraftEnumToolMaterial toolMaterial;
+    protected ScourgeEnumToolMaterial toolMaterial;
 	private int ingotID;
 	
-	public ScourgeItemAxe(int par1, ScourgeCraftEnumToolMaterial par2, int par3) {
+	public ScourgeItemAxe(int par1, ScourgeEnumToolMaterial par2, int par3) {
 		this(par1, par2);
 		this.ingotID = par3;
 	}
 	
-	public ScourgeItemAxe(int par1, ScourgeCraftEnumToolMaterial par2) {
+	public ScourgeItemAxe(int par1, ScourgeEnumToolMaterial par2) {
 		super(par1, EnumToolMaterial.EMERALD);
 		this.toolMaterial = par2;
 		this.setMaxDamage(par2.getMaxUses());

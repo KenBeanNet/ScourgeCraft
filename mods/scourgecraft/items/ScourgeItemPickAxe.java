@@ -16,15 +16,15 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class ScourgeItemPickAxe extends ItemPickaxe {
 
 	/** The material this tool is made from. */
-    protected ScourgeCraftEnumToolMaterial toolMaterial;
+    protected ScourgeEnumToolMaterial toolMaterial;
 	private int ingotID;
 	
-	public ScourgeItemPickAxe(int par1, ScourgeCraftEnumToolMaterial par2, int par3) {
+	public ScourgeItemPickAxe(int par1, ScourgeEnumToolMaterial par2, int par3) {
 		this(par1, par2);
 		this.ingotID = par3;
 	}
 	
-	public ScourgeItemPickAxe(int par1, ScourgeCraftEnumToolMaterial par2) {
+	public ScourgeItemPickAxe(int par1, ScourgeEnumToolMaterial par2) {
 		super(par1, EnumToolMaterial.EMERALD);
 		this.toolMaterial = par2;
 		this.setMaxDamage(par2.getMaxUses());

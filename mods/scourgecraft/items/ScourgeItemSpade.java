@@ -14,15 +14,15 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class ScourgeItemSpade extends ItemSpade {
 
 	/** The material this tool is made from. */
-    protected ScourgeCraftEnumToolMaterial toolMaterial;
+    protected ScourgeEnumToolMaterial toolMaterial;
 	private int ingotID;
 	
-	public ScourgeItemSpade(int par1, ScourgeCraftEnumToolMaterial par2, int par3) {
+	public ScourgeItemSpade(int par1, ScourgeEnumToolMaterial par2, int par3) {
 		this(par1, par2);
 		this.ingotID = par3;
 	}
 	
-	public ScourgeItemSpade(int par1, ScourgeCraftEnumToolMaterial par2) {
+	public ScourgeItemSpade(int par1, ScourgeEnumToolMaterial par2) {
 		super(par1, EnumToolMaterial.EMERALD);
 		
         this.efficiencyOnProperMaterial = 4.0F;

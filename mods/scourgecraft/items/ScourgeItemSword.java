@@ -24,17 +24,17 @@ public class ScourgeItemSword extends ItemSword {
 	
 	public String subText;
 	/** The material this tool is made from. */
-    protected ScourgeCraftEnumToolMaterial toolMaterial;
+    protected ScourgeEnumToolMaterial toolMaterial;
     private List hlList;
 	private int ingotID;
 	private int weaponDamage;
 	
-	public ScourgeItemSword(int par1, ScourgeCraftEnumToolMaterial par2, int par3) {
+	public ScourgeItemSword(int par1, ScourgeEnumToolMaterial par2, int par3) {
 		this(par1, par2);
 		this.ingotID = par3;
 	}
 	
-	public ScourgeItemSword(int par1, ScourgeCraftEnumToolMaterial par2) {
+	public ScourgeItemSword(int par1, ScourgeEnumToolMaterial par2) {
 		super(par1, EnumToolMaterial.EMERALD);
 		
 		this.hlList = new ArrayList();
