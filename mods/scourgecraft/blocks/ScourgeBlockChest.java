@@ -1,12 +1,14 @@
 package mods.scourgecraft.blocks;
 
 import java.util.List;
-
 import java.util.Random;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
+import mods.scourgecraft.ChestType;
+import mods.scourgecraft.ScourgeCraftCore;
+import mods.scourgecraft.entities.TileEntityIronChest;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
@@ -71,40 +73,16 @@ public class ScourgeBlockChest extends BlockContainer {
     @Override
     public TileEntity createTileEntity(World world, int metadata)
     {
-        return ScourgeChestType.makeEntity(metadata);
+        return ChestType.makeEntity(metadata);
     }
-
-// public Icon getBlockTexture(IBlockAccess worldAccess, int i, int j, int k, int l)
-// {
-// int meta = worldAccess.getBlockMetadata(i, j, k);
-// IronChestType type = IronChestType.values()[meta];
-// TileEntity te = worldAccess.getBlockTileEntity(i, j, k);
-// TileEntityIronChest icte = null;
-// if (te != null && te instanceof TileEntityIronChest)
-// {
-// icte = (TileEntityIronChest) te;
-// }
-// if (l == 0 || l == 1)
-// { // Top and Bottom
-// return type.getTextureRow() * 16 + 1;
-// }
-// else if (icte != null && l == icte.getFacing())
-// { // Front
-// return type.getTextureRow() * 16 + 2;
-// }
-// else
-// { // Back and Sides
-// return type.getTextureRow() * 16;
-// }
-// }
 
     @SideOnly(Side.CLIENT)
     @Override
     public Icon getIcon(int i, int j)
     {
-        if (j < IronChestType.values().length)
+        if (j < ChestType.values().length)
         {
-            IronChestType type = ScourgeChestType.values()[j];
+        	ChestType type = ChestType.values()[j];
             return type.getIcon(i);
         }
         return null;
@@ -130,7 +108,7 @@ public class ScourgeBlockChest extends BlockContainer {
             return true;
         }
 
-        player.openGui(IronChest.instance, ((TileEntityIronChest) te).getType().ordinal(), world, i, j, k);
+        player.openGui(ScourgeCraftCore.instance, ((TileEntityIronChest) te).getType().ordinal(), world, i, j, k);
         return true;
     }
 
@@ -179,7 +157,7 @@ public class ScourgeBlockChest extends BlockContainer {
     @Override
     public void breakBlock(World world, int i, int j, int k, int i1, int i2)
     {
-        TileEntityIronChest tileentitychest = (TileEntityIronChest) world.getBlockTileEntity(i, j, k);
+    	TileEntityIronChest tileentitychest = (TileEntityIronChest) world.getBlockTileEntity(i, j, k);
         if (tileentitychest != null)
         {
             dropContent(0, tileentitychest, world, tileentitychest.xCoord, tileentitychest.yCoord, tileentitychest.zCoord);
@@ -227,7 +205,7 @@ public class ScourgeBlockChest extends BlockContainer {
     @SideOnly(Side.CLIENT)
     public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List par3List)
     {
-        for (IronChestType type : IronChestType.values())
+        for (ChestType type : ChestType.values())
         {
             if (type.isValidForCreativeMode())
             {
@@ -242,7 +220,7 @@ public class ScourgeBlockChest extends BlockContainer {
        TileEntity te = world.getBlockTileEntity(x, y, z);
        if (te instanceof TileEntityIronChest)
        {
-           TileEntityIronChest teic = (TileEntityIronChest) te;
+    	   TileEntityIronChest teic = (TileEntityIronChest) te;
            if (teic.getType().isExplosionResistant())
            {
                return 10000f;
@@ -263,7 +241,7 @@ public class ScourgeBlockChest extends BlockContainer {
     @SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister par1IconRegister)
     {
-        for (IronChestType typ: IronChestType.values())
+        for (ChestType typ: ChestType.values())
         {
             typ.makeIcons(par1IconRegister);
         }
@@ -287,7 +265,7 @@ public class ScourgeBlockChest extends BlockContainer {
         {
             TileEntity tileEntity = worldObj.getBlockTileEntity(x, y, z);
             if (tileEntity instanceof TileEntityIronChest) {
-                TileEntityIronChest icte = (TileEntityIronChest) tileEntity;
+            	TileEntityIronChest icte = (TileEntityIronChest) tileEntity;
                 icte.rotateAround(axis);
             }
             return true;
